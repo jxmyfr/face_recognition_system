@@ -2,7 +2,7 @@ import requests
 import os
 
 # URL ของ Server ที่เก็บ known_faces.pkl
-ENCODE_URL = "http://<YOUR_SERVER_IP>/known_faces.pkl"
+ENCODE_URL = "http://face-recognition-system-b5du.onrender.com/known_faces.pkl"
 SAVE_PATH = "data/known_faces.pkl"
 
 
