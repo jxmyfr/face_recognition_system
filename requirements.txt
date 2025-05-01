@@ -5,3 +5,7 @@ pymysql
 python-dotenv
 numpy
 pandas
+fastapi
+uvicorn
+requests
+python-multipart
