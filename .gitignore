@@ -1,0 +1,7 @@
+.env
+data/known_faces.pkl
+data/logs/
+__pycache__/
+*.pyc
+*.pkl
+*.sqlite
