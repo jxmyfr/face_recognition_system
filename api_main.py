@@ -25,6 +25,10 @@ IMAGE_DIR = os.path.join(DATA_DIR, "images")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
+@app.get("/")
+def root():
+    return {"message": "Face Recognition API is running ✅"}
+
 # GET: Serve known_faces.pkl
 @app.get("/known_faces.pkl")
 def get_known_faces():
