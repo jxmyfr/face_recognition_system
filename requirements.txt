@@ -10,3 +10,4 @@ requests
 python-multipart
 python-jose
 passlib[bcrypt]
+sqlalchemy
