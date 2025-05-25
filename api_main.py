@@ -1,14 +1,18 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers import all_routers
 import os
 from datetime import datetime
 import shutil
 import json
 
+# ✅ เพิ่ม router ใหม่
+from app.routers import students
+
 app = FastAPI()
 
-# CORS config (allow frontend)
+# ✅ CORS สำหรับ frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# File paths
+# ✅ ไฟล์และโฟลเดอร์
 DATA_DIR = "data"
 ENCODE_FILE = os.path.join(DATA_DIR, "known_faces.pkl")
 LOG_FILE = os.path.join(DATA_DIR, "logs.json")
@@ -25,18 +29,22 @@ IMAGE_DIR = os.path.join(DATA_DIR, "images")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
+# ✅ ตรวจว่า API ทำงาน
 @app.get("/")
 def root():
     return {"message": "Face Recognition API is running ✅"}
 
-# GET: Serve known_faces.pkl
+# ✅ รวม router สำหรับ /students
+app.include_router(students.router)
+
+# ✅ API สำหรับ Raspberry Pi โหลด encoding
 @app.get("/known_faces.pkl")
 def get_known_faces():
     if os.path.exists(ENCODE_FILE):
         return FileResponse(ENCODE_FILE, media_type='application/octet-stream')
     return JSONResponse(status_code=404, content={"message": "Encoding file not found"})
 
-# POST: Raspberry Pi ส่งข้อมูล log
+# ✅ รับ log จาก Raspberry Pi
 @app.post("/api/log")
 def receive_log(name: str = Form(...), timestamp: str = Form(...), image: UploadFile = File(...)):
     filename = f"{name}_{timestamp.replace(':', '-')}.jpg"
@@ -61,7 +69,7 @@ def receive_log(name: str = Form(...), timestamp: str = Form(...), image: Upload
 
     return {"status": "success", "log": log_entry}
 
-# GET: ดึง log ทั้งหมดมาแสดงผล
+# ✅ ดึง log ทั้งหมด (Web Dashboard ใช้ได้)
 @app.get("/api/logs")
 def get_logs():
     if os.path.exists(LOG_FILE):
@@ -69,10 +77,13 @@ def get_logs():
             return json.load(f)
     return []
 
-# Serve static images
+# ✅ แสดงภาพย้อนหลังจาก log
 @app.get("/images/{image_name}")
 def get_image(image_name: str):
     image_path = os.path.join(IMAGE_DIR, image_name)
     if os.path.exists(image_path):
         return FileResponse(image_path)
     return JSONResponse(status_code=404, content={"message": "Image not found"})
+
+for router in all_routers:
+    app.include_router(router)
