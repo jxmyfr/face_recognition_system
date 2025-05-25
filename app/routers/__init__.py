@@ -4,6 +4,7 @@ from .subjects import router as subjects_router
 from .rooms import router as rooms_router
 from .timetable import router as timetable_router
 from .attendances import router as attendances_router
+from .auth import router as auth_router
 
 all_routers = [
     students_router,
@@ -11,5 +12,6 @@ all_routers = [
     subjects_router,
     rooms_router,
     timetable_router,
-    attendances_router
+    attendances_router,
+    auth_router
 ]
