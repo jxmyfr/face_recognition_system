@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from core.deps import get_current_admin
 from sqlalchemy.orm import Session
 from core.database import get_db
 from models import Teacher, User, RoleEnum
@@ -41,3 +42,7 @@ def delete_teacher(teacher_id: int, db: Session = Depends(get_db)):
     db.delete(teacher)
     db.commit()
     return {"message": "Teacher deleted successfully"}
+
+@router.get("/", dependencies=[Depends(get_current_admin)])
+def get_all_teachers():
+    return {"message": "This route is for admin only"}
