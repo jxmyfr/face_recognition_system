@@ -5,9 +5,10 @@ class StudentBase(BaseModel):
     room_id: int
     number: int
 
-class StudentCreate(StudentBase):
-    username: str
-    password: str
+class StudentCreate(BaseModel):
+    fullname: str
+    room_id: int
+    number: int
 
 class StudentUpdate(StudentBase):
     pass
