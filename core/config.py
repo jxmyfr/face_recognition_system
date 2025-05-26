@@ -8,6 +8,8 @@ IOU_THRESHOLD = 0.5
 LOG_INTERVAL_SECONDS = 10
 ENCODING_FILE = 'data/known_faces.pkl'
 DB_PATH = 'data/logs/logs.db'
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGORITHM = "HS256"
 
 MYSQL_CONFIG = {
     'host': os.getenv('DB_HOST'),
