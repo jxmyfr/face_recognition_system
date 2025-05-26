@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 *.pkl
 *.sqlite
+tools/create_secrets_key.py
