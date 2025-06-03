@@ -12,21 +12,34 @@ def get_data(db: Session = Depends(get_db)):
     result = db.query(Teacher).all()
     return result
 
+# @router.post("/", response_model=TeacherOut)
+# def create_teacher(data: TeacherCreate, db: Session = Depends(get_db)):
+#     if db.query(User).filter_by(username=data.username).first():
+#         raise HTTPException(status_code=400, detail="Username already exists")
+
+#     user = User(username=data.username, password=data.password, role=RoleEnum.teacher)
+#     db.add(user)
+#     db.commit()
+#     db.refresh(user)
+
+#     teacher = Teacher(fullname=data.fullname, user_id=user.id)
+#     db.add(teacher)
+#     db.commit()
+#     db.refresh(teacher)
+#     return teacher
+
 @router.post("/", response_model=TeacherOut)
 def create_teacher(data: TeacherCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter_by(username=data.username).first():
-        raise HTTPException(status_code=400, detail="Username already exists")
+    try:
+        teacher = Teacher(**data.dict())
+        db.add(teacher)
+        db.commit()
+        db.refresh(teacher)
+        return teacher
+    except Exception as e:
+        print(f"❌ Error creating teacher: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
-    user = User(username=data.username, password=data.password, role=RoleEnum.teacher)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-
-    teacher = Teacher(fullname=data.fullname, user_id=user.id)
-    db.add(teacher)
-    db.commit()
-    db.refresh(teacher)
-    return teacher
 
 @router.get("/", response_model=list[TeacherOut])
 def get_teachers(db: Session = Depends(get_db)):
