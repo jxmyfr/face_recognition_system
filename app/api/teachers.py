@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Teacher
+from core.models import Teacher
 from app.schemas.teacher_schema import TeacherCreate, TeacherOut
 from core.database import get_db
 

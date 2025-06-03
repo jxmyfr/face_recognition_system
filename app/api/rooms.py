@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
-from models import Room
+from core.models import Room
 from app.schemas.room_schema import RoomCreate, RoomOut
 from core.deps import get_current_admin
 

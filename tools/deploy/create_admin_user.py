@@ -1,7 +1,7 @@
 # create_admin_user.py
 
 from core.database import SessionLocal
-from models import User
+from core.models import User
 from passlib.hash import bcrypt
 import sys
 from dotenv import load_dotenv

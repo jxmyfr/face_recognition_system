@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 from core.database import Base, engine
-from models import *  # ต้อง import ให้ครบทุกตาราง
+from core.models import *  # ต้อง import ให้ครบทุกตาราง
 
 load_dotenv()
 

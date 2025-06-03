@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from core.database import get_db
-from models import Attendance
+from core.models import Attendance
 from app.schemas.attendance_schema import AttendanceCreate, AttendanceOut
 from core.deps import get_current_admin
 

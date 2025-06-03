@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.hash import bcrypt
 from sqlalchemy.orm import Session
 from core.database import get_db
-from models import User
+from core.models import User
 import os
 
 # Secret key config

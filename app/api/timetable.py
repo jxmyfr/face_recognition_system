@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Timetable
+from core.models import Timetable
 from app.schemas.timetable_schema import TimetableCreate, TimetableOut
 from core.database import get_db
 

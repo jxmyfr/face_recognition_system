@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Subject
+from core.models import Subject
 from app.schemas.subject_schema import SubjectCreate, SubjectOut
 from core.database import get_db
 
