@@ -7,6 +7,11 @@ from app.schemas.student_schema import StudentCreate, StudentOut
 
 router = APIRouter(prefix="/students", tags=["Students"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Student).all()
+    return result
+
 @router.post("/", response_model=StudentOut)
 def create_student(data: StudentCreate, db: Session = Depends(get_db)):
     # ตรวจสอบว่า room_id มีอยู่จริงหรือไม่

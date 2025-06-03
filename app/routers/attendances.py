@@ -6,6 +6,11 @@ from app.schemas.attendance_schema import AttendanceCreate, AttendanceOut
 
 router = APIRouter(prefix="/attendances", tags=["Attendances"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Attendance).all()
+    return result
+
 @router.post("/", response_model=AttendanceOut)
 def create_attendance(data: AttendanceCreate, db: Session = Depends(get_db)):
     attendance = Attendance(**data.dict())

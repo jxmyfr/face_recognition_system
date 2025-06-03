@@ -7,6 +7,11 @@ from app.schemas.teacher_schema import TeacherCreate, TeacherOut
 
 router = APIRouter(prefix="/teachers", tags=["Teachers"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Teacher).all()
+    return result
+
 @router.post("/", response_model=TeacherOut)
 def create_teacher(data: TeacherCreate, db: Session = Depends(get_db)):
     if db.query(User).filter_by(username=data.username).first():

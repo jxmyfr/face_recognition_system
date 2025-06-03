@@ -6,6 +6,11 @@ from app.schemas.subject_schema import SubjectCreate, SubjectOut
 
 router = APIRouter(prefix="/subjects", tags=["Subjects"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Subject).all()
+    return result
+
 @router.post("/", response_model=SubjectOut)
 def create_subject(data: SubjectCreate, db: Session = Depends(get_db)):
     if db.query(Subject).filter_by(code=data.code).first():

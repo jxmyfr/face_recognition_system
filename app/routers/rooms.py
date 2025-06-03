@@ -6,6 +6,11 @@ from app.schemas.room_schema import RoomCreate, RoomOut
 
 router = APIRouter(prefix="/rooms", tags=["Rooms"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Room).all()
+    return result
+
 @router.post("/", response_model=RoomOut)
 def create_room(data: RoomCreate, db: Session = Depends(get_db)):
     room = Room(**data.dict())

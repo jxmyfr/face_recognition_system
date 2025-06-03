@@ -6,6 +6,11 @@ from app.schemas.timetable_schema import TimetableCreate, TimetableOut
 
 router = APIRouter(prefix="/timetable", tags=["Timetable"])
 
+@router.get("/")
+def get_data(db: Session = Depends(get_db)):
+    result = db.query(Timetable).all()
+    return result
+
 @router.post("/", response_model=TimetableOut)
 def create_timetable(data: TimetableCreate, db: Session = Depends(get_db)):
     timetable = Timetable(**data.dict())
