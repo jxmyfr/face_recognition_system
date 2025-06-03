@@ -2,6 +2,8 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import all_routers
+from dotenv import load_dotenv
+
 import os
 from datetime import datetime
 import shutil
@@ -10,6 +12,7 @@ import json
 # ✅ เพิ่ม router ใหม่
 from app.routers import students
 
+load_dotenv()
 app = FastAPI()
 
 # ✅ CORS สำหรับ frontend

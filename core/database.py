@@ -11,8 +11,11 @@ DB_URL = os.getenv("DB_URL")
 engine = create_engine(
     DB_URL,
     echo=False,
-    pool_pre_ping=True
+    pool_pre_ping=True,      # ตรวจสอบ connection ก่อนใช้ทุกครั้ง
+    pool_recycle=1800,       # recycle connection ทุก 30 นาที
+    pool_timeout=30          # timeout ถ้าเชื่อมต่อนานเกิน
 )
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

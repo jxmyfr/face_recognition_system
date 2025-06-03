@@ -4,6 +4,8 @@ from core.database import SessionLocal
 from models import User
 from passlib.hash import bcrypt
 import sys
+from dotenv import load_dotenv
+load_dotenv()
 
 def create_admin():
     db = SessionLocal()
