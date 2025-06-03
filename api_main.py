@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import all_routers
+from app.api import all_routers,auth
 from dotenv import load_dotenv
 
 import os
@@ -14,6 +14,9 @@ from app.api import students
 
 load_dotenv()
 app = FastAPI()
+
+# ✅ ต้องเป็นแบบนี้ถ้าคุณใช้ /api/login
+app.include_router(auth.router, prefix="/api")
 
 # ✅ CORS สำหรับ frontend
 app.add_middleware(
