@@ -3,6 +3,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from core.config import SECRET_KEY, ALGORITHM
 from pydantic import BaseModel
+from core.database import SessionLocal  # ✅ ต้องมีบรรทัดนี้
+from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -28,3 +30,10 @@ def get_current_admin(user: TokenData = Depends(get_current_user)):
             detail="Admin access only"
         )
     return user
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

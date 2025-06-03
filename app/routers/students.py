@@ -1,24 +1,13 @@
-# routers/students.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from core.database import get_db
-from models import Student, Room
+from models import Student
 from app.schemas.student_schema import StudentCreate, StudentOut
+from core.database import get_db
 
 router = APIRouter(prefix="/students", tags=["Students"])
 
-@router.get("/")
-def get_data(db: Session = Depends(get_db)):
-    result = db.query(Student).all()
-    return result
-
 @router.post("/", response_model=StudentOut)
 def create_student(data: StudentCreate, db: Session = Depends(get_db)):
-    # ตรวจสอบว่า room_id มีอยู่จริงหรือไม่
-    room = db.query(Room).get(data.room_id)
-    if not room:
-        raise HTTPException(status_code=404, detail="Room not found")
-
     student = Student(**data.dict())
     db.add(student)
     db.commit()

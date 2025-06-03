@@ -3,25 +3,21 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from models import Attendance
 from app.schemas.attendance_schema import AttendanceCreate, AttendanceOut
+from core.deps import get_current_admin
 
 router = APIRouter(prefix="/attendances", tags=["Attendances"])
 
-@router.get("/")
-def get_data(db: Session = Depends(get_db)):
-    result = db.query(Attendance).all()
-    return result
+@router.get("/", response_model=list[AttendanceOut])
+def get_attendances(db: Session = Depends(get_db)):
+    return db.query(Attendance).all()
 
-@router.post("/", response_model=AttendanceOut)
+@router.post("/", response_model=AttendanceOut, dependencies=[Depends(get_current_admin)])
 def create_attendance(data: AttendanceCreate, db: Session = Depends(get_db)):
     attendance = Attendance(**data.dict())
     db.add(attendance)
     db.commit()
     db.refresh(attendance)
     return attendance
-
-@router.get("/", response_model=list[AttendanceOut])
-def get_attendances(db: Session = Depends(get_db)):
-    return db.query(Attendance).all()
 
 @router.get("/{attendance_id}", response_model=AttendanceOut)
 def get_attendance(attendance_id: int, db: Session = Depends(get_db)):
@@ -30,7 +26,7 @@ def get_attendance(attendance_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Attendance not found")
     return attendance
 
-@router.delete("/{attendance_id}")
+@router.delete("/{attendance_id}", dependencies=[Depends(get_current_admin)])
 def delete_attendance(attendance_id: int, db: Session = Depends(get_db)):
     attendance = db.query(Attendance).get(attendance_id)
     if not attendance:

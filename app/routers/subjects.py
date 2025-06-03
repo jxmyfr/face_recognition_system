@@ -1,20 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from core.database import get_db
 from models import Subject
 from app.schemas.subject_schema import SubjectCreate, SubjectOut
+from core.database import get_db
 
 router = APIRouter(prefix="/subjects", tags=["Subjects"])
 
-@router.get("/")
-def get_data(db: Session = Depends(get_db)):
-    result = db.query(Subject).all()
-    return result
-
 @router.post("/", response_model=SubjectOut)
 def create_subject(data: SubjectCreate, db: Session = Depends(get_db)):
-    if db.query(Subject).filter_by(code=data.code).first():
-        raise HTTPException(status_code=400, detail="Subject code already exists")
     subject = Subject(**data.dict())
     db.add(subject)
     db.commit()
